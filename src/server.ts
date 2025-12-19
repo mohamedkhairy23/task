@@ -5,6 +5,7 @@ import { AppDataSource } from "./config/data-source.js";
 import authRoutes from "./routes/authRoutes.js";
 import creditCardRoutes from "./routes/creditCardRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/credit-cards", creditCardRoutes);
 app.use("/products", productRoutes);
+app.use("/orders", orderRoutes);
 
 AppDataSource.initialize()
   .then(() => {
