@@ -6,15 +6,23 @@ import authRoutes from "./routes/authRoutes.js";
 import creditCardRoutes from "./routes/creditCardRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
+import webhookRoutes from "./routes/webHookRoutes.js"; // <-- import webhook
 
 const app = express();
+
+// Regular JSON parser for most routes
 app.use(express.json());
 
+// Routes
 app.use("/auth", authRoutes);
 app.use("/credit-cards", creditCardRoutes);
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
 
+// Stripe webhook route (use express.raw)
+app.use("/webhook", webhookRoutes);
+
+// Initialize DB and start server
 AppDataSource.initialize()
   .then(() => {
     console.log("✅ Database connected");

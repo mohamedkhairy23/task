@@ -9,6 +9,13 @@ import {
 } from "typeorm";
 import { User } from "./User.js";
 
+export enum OrderStatus {
+  PENDING = "pending",
+  PAID = "paid",
+  FAILED = "failed",
+  CANCELLED = "cancelled",
+}
+
 @Entity()
 export class Order extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -22,6 +29,13 @@ export class Order extends BaseEntity {
 
   @Column("decimal", { precision: 12, scale: 2 })
   totalAmount!: number;
+
+  @Column({
+    type: "enum",
+    enum: OrderStatus,
+    default: OrderStatus.PENDING,
+  })
+  status!: OrderStatus;
 
   @Index()
   @CreateDateColumn()

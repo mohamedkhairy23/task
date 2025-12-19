@@ -22,17 +22,6 @@ export const createOrder = async (req: Request, res: Response) => {
     // Calculate total amount
     const totalAmount = products.reduce((sum, p) => sum + Number(p.price), 0);
 
-    // Create Stripe Payment Intent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(totalAmount * 100), // convert to cents
-      currency: "usd",
-      payment_method_types: ["card"],
-      metadata: {
-        userId,
-        products: JSON.stringify(products),
-      },
-    });
-
     // Save order in DB
     const order = Order.create({
       user,
@@ -40,6 +29,18 @@ export const createOrder = async (req: Request, res: Response) => {
       totalAmount,
     });
     await order.save();
+
+    // Create Stripe Payment Intent with orderId in metadata
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(totalAmount * 100), // convert to cents
+      currency: "usd",
+      payment_method_types: ["card"],
+      metadata: {
+        userId,
+        orderId: order.id, // <-- added orderId
+        products: JSON.stringify(products),
+      },
+    });
 
     return res.status(201).json({
       orderId: order.id,
