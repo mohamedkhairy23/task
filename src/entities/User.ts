@@ -4,7 +4,7 @@ import {
   Column,
   OneToMany,
   CreateDateColumn,
-  BaseEntity, // <-- add this
+  BaseEntity,
 } from "typeorm";
 import { Order } from "./Order.js";
 
@@ -32,7 +32,6 @@ export class CreditCard {
 
 @Entity()
 export class User extends BaseEntity {
-  // <-- extend BaseEntity
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
@@ -49,7 +48,7 @@ export class User extends BaseEntity {
   orders!: Order[];
 
   @Column("simple-json", { nullable: true })
-  creditCards?: CreditCard[]; // Store array of embedded credit card objects
+  creditCards?: CreditCard[]; // array of embedded credit card objects
 
   @CreateDateColumn()
   createdAt!: Date;

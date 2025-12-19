@@ -74,3 +74,25 @@ export const signin = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+export const getLoggedInUser = async (req: Request, res: Response) => {
+  const userPayload = (req as any).user;
+  if (!userPayload) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const user = await userRepo.findOne({ where: { id: userPayload.id } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      createdAt: user.createdAt,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
