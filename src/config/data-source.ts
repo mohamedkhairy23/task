@@ -8,17 +8,13 @@ import { Order } from "../entities/Order.js";
 
 export const AppDataSource = new DataSource({
   type: "postgres",
-
   host: requiredEnv("PGHOST"),
-  port: 5432,
+  port: parseInt(process.env.PGPORT || "5432", 10),
   username: requiredEnv("PGUSER"),
   password: requiredEnv("PGPASSWORD"),
   database: requiredEnv("PGDATABASE"),
-
-  ssl: {
-    rejectUnauthorized: false,
-  },
-
+  ssl:
+    process.env.PGSSLMODE === "require" ? { rejectUnauthorized: false } : false,
   synchronize: true,
   logging: false,
   entities: [User, Product, Order],
