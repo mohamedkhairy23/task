@@ -3,6 +3,27 @@ import { Order } from "../entities/Order.js";
 import { User } from "../entities/User.js";
 import Stripe from "stripe";
 
+export const getUserOrders = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+
+    const user = await User.findOne({ where: { id: userId } });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const orders = await Order.find({
+      where: { user: { id: userId } },
+      order: { createdAt: "DESC" },
+    });
+
+    return res.status(200).json({ orders });
+  } catch (err: any) {
+    console.error(err);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: err.message });
+  }
+};
+
 const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   apiVersion: "2025-12-15.clover",
 });
