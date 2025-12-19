@@ -1,6 +1,8 @@
 import "dotenv/config";
 import "reflect-metadata";
 import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import { AppDataSource } from "./config/data-source.js";
 import authRoutes from "./routes/authRoutes.js";
 import creditCardRoutes from "./routes/creditCardRoutes.js";
@@ -10,7 +12,13 @@ import webhookRoutes from "./routes/webHookRoutes.js"; // <-- import webhook
 
 const app = express();
 
-// Regular JSON parser for most routes
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+    // credentials: true,
+  })
+);
+// app.use(cookieParser());
 app.use(express.json());
 
 // Routes
