@@ -3,11 +3,13 @@ import "reflect-metadata";
 import express from "express";
 import { AppDataSource } from "./config/data-source.js";
 import authRoutes from "./routes/authRoutes.js";
+import creditCardRoutes from "./routes/creditCardRoutes.js";
 
 const app = express();
 app.use(express.json());
 
 app.use("/auth", authRoutes);
+app.use("/credit-cards", creditCardRoutes);
 
 AppDataSource.initialize()
   .then(() => {
