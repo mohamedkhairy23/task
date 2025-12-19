@@ -2,7 +2,6 @@ import "dotenv/config";
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import { AppDataSource } from "./config/data-source.js";
 import authRoutes from "./routes/authRoutes.js";
 import creditCardRoutes from "./routes/creditCardRoutes.js";
