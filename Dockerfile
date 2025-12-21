@@ -8,8 +8,9 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 
-# Copy source files
+# Copy tsconfig, types, and source files
 COPY tsconfig.json ./
+COPY types ./types
 COPY src ./src
 
 # Build TypeScript
